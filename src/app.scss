@@ -19,12 +19,32 @@
   line-height: 1.6;
   margin: 0 auto;
   max-width: 794px;
-  max-height: 1123px;
-  padding: 20px;
   color: #333;
   background-color: #fff;
 
   border-radius: 8px;
+
+  position: relative;
+
+  .download-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #4caf50; /* Green */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #45a049;
+    }
+  }
+
+  .resume-padding {
+    padding: 20px;
+  }
 
   .resume-header {
     text-align: center;
@@ -34,23 +54,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      position: relative;
-
-      .download-button {
-        position: absolute;
-        top: 0;
-        right: 0;
-        background-color: #4caf50; /* Green */
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-
-        &:hover {
-          background-color: #45a049;
-        }
-      }
     }
 
     .name {
