@@ -1,84 +1,37 @@
 import "./app.scss";
 
 import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+import { toPng } from "html-to-image";
 import LinkedinLogo from "./assets/LinkedinLogo";
 import HomeLogo from "./assets/HomeLogo";
 import EmailLogo from "./assets/EmailLogo";
-import { useCallback, useEffect, useMemo, useRef, useState, memo } from "react";
+import { useCallback, useMemo, useRef, useState, memo } from "react";
 import { email, highlightedSkills, linkIn, name, role, skills } from "./const";
 import { cleanLinkedInUrl } from "./utils";
 
 const Resume = () => {
-  // Change the type to HTMLDivElement
   const resumeContentRef = useRef<HTMLDivElement | null>(null);
-
   const [showLoader, setLoader] = useState<boolean>(false);
+  const memoizedResumeContentRef = useMemo(() => resumeContentRef, []);
 
   const downloadPDF = useCallback(async () => {
-    const resumeContent = resumeContentRef.current;
+    const resumeContent = memoizedResumeContentRef.current;
     if (!resumeContent) return;
 
-    window.scrollTo(0, 0);
     setLoader(true);
 
     try {
-      const canvas = await html2canvas(resumeContent, { scale: 1 });
-      const canvasHeight = canvas.height;
-      const canvasWidth = canvas.width;
-      const pdfWidth = 210; // A4 width in mm
-      const pdfHeight = 297; // A4 height in mm
-      const margin = 10;
-      const ratio = (pdfWidth - 2 * margin) / canvasWidth; // Ratio for scaling
-      const pdfPageHeightPx = (pdfHeight - 2 * margin) / ratio; // Height in pixels for a PDF page
-      const totalImages = Math.ceil(canvasHeight / pdfPageHeightPx); // Number of images required
+      const imageData = await toPng(resumeContent, { cacheBust: true });
 
-      const images = [];
+      const pdf = new jsPDF();
+      const imgProps = pdf.getImageProperties(imageData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
-      for (let page = 0; page < totalImages; page++) {
-        const pageCanvas = document.createElement("canvas");
-        const pageCtx = pageCanvas.getContext("2d");
-
-        if (!pageCtx) {
-          console.error("Failed to get canvas context.");
-          throw new Error("Canvas context error");
-        }
-
-        // Set the width and height for the page canvas
-        pageCanvas.width = canvasWidth;
-        const currentPageHeight = Math.min(
-          pdfPageHeightPx,
-          canvasHeight - page * pdfPageHeightPx
-        );
-        pageCanvas.height = currentPageHeight;
-
-        // Draw the relevant portion of the original canvas
-        pageCtx.drawImage(
-          canvas,
-          0,
-          page * pdfPageHeightPx,
-          canvasWidth,
-          currentPageHeight,
-          0,
-          0,
-          canvasWidth,
-          currentPageHeight
-        );
-
-        // Store the image data URL for later use
-        images.push(pageCanvas.toDataURL("image/png"));
-      }
-
-      // Now `images` contains all the image data URLs
-      // You can handle the images as needed (e.g., download, display, etc.)
-      images.forEach((imageData, index) => {
-        const link = document.createElement("a");
-        link.href = imageData;
-        link.download = `ResumePage${index + 1}.png`;
-        link.click(); // This will trigger the download
-      });
+      pdf.addImage(imageData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save("resume.pdf");
     } catch (error) {
-      console.error("Error generating images:", error);
+      console.error("Error generating image with html-to-image:", error);
     } finally {
       setLoader(false);
     }
