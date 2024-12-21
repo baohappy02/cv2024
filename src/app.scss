@@ -1,0 +1,144 @@
+.html2canvas-container {
+  width: 3000px !important;
+  height: 3000px !important;
+}
+
+.container {
+  display: flex;
+  width: 100vw;
+  width: 100svw;
+  justify-content: center;
+  align-items: center;
+
+  padding: 10px 0;
+}
+
+.resume-container {
+  font-family: "Arial", sans-serif;
+  margin: 0 auto;
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 794px;
+  max-height: 1123px;
+  padding: 20px;
+  color: #333;
+  background-color: #fff;
+
+  border-radius: 8px;
+
+  .resume-header {
+    text-align: center;
+    margin-bottom: 20px;
+
+    .resume-name-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+
+      .download-button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: #4caf50; /* Green */
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #45a049;
+        }
+      }
+    }
+
+    .name {
+      font-size: 2.5em;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .title {
+      font-size: 1.2em;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .contact {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      a {
+        display: flex;
+        gap: 3px;
+        color: #007bff;
+        text-decoration: none;
+        margin-bottom: 5px;
+
+        &:first-child {
+          gap: 5px;
+        }
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  section {
+    h2 {
+      font-size: 1.8em;
+      border-bottom: 2px solid #ddd;
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .skills {
+    .skills-container {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      font-size: 16px;
+
+      .highlight {
+        font-weight: bold;
+        color: #4caf50; // Highlight color
+      }
+    }
+  }
+
+  .experience,
+  .projects {
+    .job,
+    .project {
+      margin-bottom: 20px;
+
+      h3 {
+        font-size: 1.5em;
+        margin-bottom: 5px;
+      }
+
+      .location-date {
+        font-size: 0.9em;
+        color: #666;
+        margin-bottom: 10px;
+      }
+
+      ul {
+        list-style: disc;
+        margin-left: -5px;
+        li {
+          margin-bottom: 5px;
+        }
+      }
+    }
+  }
+}
