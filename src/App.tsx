@@ -9,6 +9,8 @@ import { useCallback, useMemo, useRef, useState, memo } from "react";
 import { email, highlightedSkills, linkIn, name, role, skills } from "./const";
 import { cleanLinkedInUrl } from "./utils";
 
+const SMART_SPLIT = true;
+
 const Resume = () => {
   const resumeContentRef = useRef<HTMLDivElement | null>(null);
   const [showLoader, setLoader] = useState<boolean>(false);
@@ -22,26 +24,50 @@ const Resume = () => {
 
     try {
       const pdf = new jsPDF();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      let position = 0;
 
-      // Convert each section to an image and add to PDF
-      const sections = resumeContent.querySelectorAll("section, header");
-      for (const section of sections) {
-        const sectionImage = await toPng(section as HTMLElement, {
-          cacheBust: true,
-        });
-        const imgProps = pdf.getImageProperties(sectionImage);
-        const sectionHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      if (SMART_SPLIT) {
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        let position = 0;
 
-        if (position + sectionHeight > pageHeight) {
-          pdf.addPage();
-          position = 0;
+        // Convert each section to an image and add to PDF
+        const sections = resumeContent.querySelectorAll("section, header");
+        for (const section of sections) {
+          const sectionImage = await toPng(section as HTMLElement, {
+            cacheBust: true,
+          });
+          const imgProps = pdf.getImageProperties(sectionImage);
+          const sectionHeight = (imgProps.height * pdfWidth) / imgProps.width;
+          if (position + sectionHeight > pageHeight) {
+            pdf.addPage();
+            position = 0;
+          }
+          pdf.addImage(
+            sectionImage,
+            "PNG",
+            0,
+            position,
+            pdfWidth,
+            sectionHeight
+          );
+          position += sectionHeight;
         }
+      } else {
+        const imageData = await toPng(resumeContent, { cacheBust: true });
+        const imgProps = pdf.getImageProperties(imageData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        // Assuming you want to split the content into multiple pages
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        let position = 0;
 
-        pdf.addImage(sectionImage, "PNG", 0, position, pdfWidth, sectionHeight);
-        position += sectionHeight;
+        while (position < pdfHeight) {
+          pdf.addImage(imageData, "PNG", 0, -position, pdfWidth, pdfHeight);
+          position += pageHeight;
+          if (position < pdfHeight) {
+            pdf.addPage();
+          }
+        }
       }
 
       pdf.save("resume.pdf");
