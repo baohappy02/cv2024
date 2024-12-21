@@ -28,7 +28,18 @@ const Resume = () => {
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
-      pdf.addImage(imageData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      // Assuming you want to split the content into multiple pages
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      let position = 0;
+
+      while (position < pdfHeight) {
+        pdf.addImage(imageData, "PNG", 0, -position, pdfWidth, pdfHeight);
+        position += pageHeight;
+        if (position < pdfHeight) {
+          pdf.addPage();
+        }
+      }
+
       pdf.save("resume.pdf");
     } catch (error) {
       console.error("Error generating image with html-to-image:", error);
