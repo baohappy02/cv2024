@@ -35,8 +35,9 @@
     }
   }
 
-  .resume-padding {
-    padding: 20px;
+  header,
+  section {
+    padding: 0 20px;
   }
 
   .resume-header {
@@ -86,11 +87,17 @@
   }
 
   section {
+    h3 {
+      margin-top: 0px;
+    }
+
     h2 {
       font-size: 1.8em;
       border-bottom: 2px solid #ddd;
+
+      padding-bottom: 5px;
       margin-top: 5px;
-      margin-bottom: 5px;
+      margin-bottom: 0;
     }
 
     p {

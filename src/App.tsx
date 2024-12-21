@@ -21,23 +21,27 @@ const Resume = () => {
     setLoader(true);
 
     try {
-      const imageData = await toPng(resumeContent, { cacheBust: true });
-
       const pdf = new jsPDF();
-      const imgProps = pdf.getImageProperties(imageData);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-      // Assuming you want to split the content into multiple pages
       const pageHeight = pdf.internal.pageSize.getHeight();
+      const pdfWidth = pdf.internal.pageSize.getWidth();
       let position = 0;
 
-      while (position < pdfHeight) {
-        pdf.addImage(imageData, "PNG", 0, -position, pdfWidth, pdfHeight);
-        position += pageHeight;
-        if (position < pdfHeight) {
+      // Convert each section to an image and add to PDF
+      const sections = resumeContent.querySelectorAll("section, header");
+      for (const section of sections) {
+        const sectionImage = await toPng(section as HTMLElement, {
+          cacheBust: true,
+        });
+        const imgProps = pdf.getImageProperties(sectionImage);
+        const sectionHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+        if (position + sectionHeight > pageHeight) {
           pdf.addPage();
+          position = 0;
         }
+
+        pdf.addImage(sectionImage, "PNG", 0, position, pdfWidth, sectionHeight);
+        position += sectionHeight;
       }
 
       pdf.save("resume.pdf");
@@ -55,7 +59,7 @@ const Resume = () => {
           {showLoader ? "Loading" : "Download as PDF"}
         </button>
 
-        <div ref={resumeContentRef} className="resume-padding">
+        <div ref={resumeContentRef}>
           <header className="resume-header">
             <div className="resume-name-container">
               <h1 className="name">{name}</h1>
