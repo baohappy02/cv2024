@@ -1,7 +1,7 @@
 import "./app.scss";
 
 import jsPDF from "jspdf";
-import { toPng } from "html-to-image";
+import { toCanvas, toPng } from "html-to-image";
 import LinkedinLogo from "./assets/LinkedinLogo";
 import HomeLogo from "./assets/HomeLogo";
 import EmailLogo from "./assets/EmailLogo";
@@ -13,60 +13,6 @@ const Resume = () => {
   const resumeContentRef = useRef<HTMLDivElement | null>(null);
   const [showLoader, setLoader] = useState<boolean>(false);
 
-  const convertSectionToImage = async (
-    section: HTMLElement,
-    pdfWidth: number
-  ) => {
-    try {
-      const sectionImage = await toPng(section, { cacheBust: true });
-      const imgProps = new jsPDF().getImageProperties(sectionImage);
-      const sectionHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      return { sectionImage, sectionHeight };
-    } catch (error) {
-      console.error("Error converting section to image:", error);
-      return null;
-    }
-  };
-
-  const addSectionToPDF = (
-    pdf: jsPDF,
-    sectionImage: string,
-    sectionHeight: number,
-    position: number,
-    pdfWidth: number,
-    pageHeight: number
-  ) => {
-    if (position + sectionHeight > pageHeight) {
-      pdf.addPage();
-      position = 0;
-    }
-    pdf.addImage(sectionImage, "PNG", 0, position, pdfWidth, sectionHeight);
-    return position + sectionHeight;
-  };
-
-  const generatePDF = async (
-    sections: NodeListOf<HTMLElement>,
-    pdf: jsPDF,
-    pdfWidth: number,
-    pageHeight: number
-  ) => {
-    let position = 0;
-    for (const section of sections) {
-      const result = await convertSectionToImage(section, pdfWidth);
-      if (result) {
-        const { sectionImage, sectionHeight } = result;
-        position = addSectionToPDF(
-          pdf,
-          sectionImage,
-          sectionHeight,
-          position,
-          pdfWidth,
-          pageHeight
-        );
-      }
-    }
-  };
-
   const downloadPDF = useCallback(async () => {
     const resumeContent = resumeContentRef.current;
     if (!resumeContent) return;
@@ -75,13 +21,81 @@ const Resume = () => {
 
     try {
       const pdf = new jsPDF();
+      const margin = 10; // Define margin size (adjust as needed)
       const pageHeight = pdf.internal.pageSize.getHeight();
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const sections = resumeContent.querySelectorAll(
-        "section, header"
-      ) as NodeListOf<HTMLElement>;
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const availablePageHeight = pageHeight - 2 * margin;
+      const availablePageWidth = pageWidth - 2 * margin;
+      let cumulativeHeight = margin;
 
-      await generatePDF(sections, pdf, pdfWidth, pageHeight);
+      // Get all sections
+      const sections = resumeContent.querySelectorAll("header, section");
+
+      for (let i = 0; i < sections.length; i++) {
+        const section = sections[i] as HTMLElement;
+
+        // Get all child elements within the section
+        const elements = section.children;
+
+        for (let j = 0; j < elements.length; j++) {
+          const element = elements[j] as HTMLElement;
+
+          // Convert element to canvas
+          const canvas = await toCanvas(element, { cacheBust: true });
+          const imgData = canvas.toDataURL("image/png");
+          const imgProps = pdf.getImageProperties(imgData);
+          const imgHeight =
+            (imgProps.height * availablePageWidth) / imgProps.width;
+
+          // Check if adding the element exceeds the available page height
+          if (cumulativeHeight + imgHeight > pageHeight - margin) {
+            // If the element is larger than the available page height, scale it down
+            if (imgHeight > availablePageHeight) {
+              const scale = availablePageHeight / imgHeight;
+              const scaledWidth = availablePageWidth * scale;
+              const scaledHeight = imgHeight * scale;
+
+              pdf.addPage();
+              cumulativeHeight = margin;
+
+              pdf.addImage(
+                imgData,
+                "PNG",
+                margin,
+                cumulativeHeight,
+                scaledWidth,
+                scaledHeight
+              );
+              cumulativeHeight += scaledHeight;
+            } else {
+              pdf.addPage();
+              cumulativeHeight = margin;
+
+              pdf.addImage(
+                imgData,
+                "PNG",
+                margin,
+                cumulativeHeight,
+                availablePageWidth,
+                imgHeight
+              );
+              cumulativeHeight += imgHeight;
+            }
+          } else {
+            // Add image to PDF
+            pdf.addImage(
+              imgData,
+              "PNG",
+              margin,
+              cumulativeHeight,
+              availablePageWidth,
+              imgHeight
+            );
+            cumulativeHeight += imgHeight;
+          }
+        }
+      }
+
       pdf.save("resume.pdf");
     } catch (error) {
       console.error("Error generating PDF:", error);
