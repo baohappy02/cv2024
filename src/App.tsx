@@ -5,74 +5,86 @@ import { toPng } from "html-to-image";
 import LinkedinLogo from "./assets/LinkedinLogo";
 import HomeLogo from "./assets/HomeLogo";
 import EmailLogo from "./assets/EmailLogo";
-import { useCallback, useMemo, useRef, useState, memo } from "react";
+import { useCallback, useRef, useState, memo } from "react";
 import { email, highlightedSkills, linkIn, name, role, skills } from "./const";
 import { cleanLinkedInUrl } from "./utils";
-
-const SMART_SPLIT = true;
 
 const Resume = () => {
   const resumeContentRef = useRef<HTMLDivElement | null>(null);
   const [showLoader, setLoader] = useState<boolean>(false);
-  const memoizedResumeContentRef = useMemo(() => resumeContentRef, []);
+
+  const convertSectionToImage = async (
+    section: HTMLElement,
+    pdfWidth: number
+  ) => {
+    try {
+      const sectionImage = await toPng(section, { cacheBust: true });
+      const imgProps = new jsPDF().getImageProperties(sectionImage);
+      const sectionHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      return { sectionImage, sectionHeight };
+    } catch (error) {
+      console.error("Error converting section to image:", error);
+      return null;
+    }
+  };
+
+  const addSectionToPDF = (
+    pdf: jsPDF,
+    sectionImage: string,
+    sectionHeight: number,
+    position: number,
+    pdfWidth: number,
+    pageHeight: number
+  ) => {
+    if (position + sectionHeight > pageHeight) {
+      pdf.addPage();
+      position = 0;
+    }
+    pdf.addImage(sectionImage, "PNG", 0, position, pdfWidth, sectionHeight);
+    return position + sectionHeight;
+  };
+
+  const generatePDF = async (
+    sections: NodeListOf<HTMLElement>,
+    pdf: jsPDF,
+    pdfWidth: number,
+    pageHeight: number
+  ) => {
+    let position = 0;
+    for (const section of sections) {
+      const result = await convertSectionToImage(section, pdfWidth);
+      if (result) {
+        const { sectionImage, sectionHeight } = result;
+        position = addSectionToPDF(
+          pdf,
+          sectionImage,
+          sectionHeight,
+          position,
+          pdfWidth,
+          pageHeight
+        );
+      }
+    }
+  };
 
   const downloadPDF = useCallback(async () => {
-    const resumeContent = memoizedResumeContentRef.current;
+    const resumeContent = resumeContentRef.current;
     if (!resumeContent) return;
 
     setLoader(true);
 
     try {
       const pdf = new jsPDF();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const sections = resumeContent.querySelectorAll(
+        "section, header"
+      ) as NodeListOf<HTMLElement>;
 
-      if (SMART_SPLIT) {
-        const pageHeight = pdf.internal.pageSize.getHeight();
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        let position = 0;
-
-        // Convert each section to an image and add to PDF
-        const sections = resumeContent.querySelectorAll("section, header");
-        for (const section of sections) {
-          const sectionImage = await toPng(section as HTMLElement, {
-            cacheBust: true,
-          });
-          const imgProps = pdf.getImageProperties(sectionImage);
-          const sectionHeight = (imgProps.height * pdfWidth) / imgProps.width;
-          if (position + sectionHeight > pageHeight) {
-            pdf.addPage();
-            position = 0;
-          }
-          pdf.addImage(
-            sectionImage,
-            "PNG",
-            0,
-            position,
-            pdfWidth,
-            sectionHeight
-          );
-          position += sectionHeight;
-        }
-      } else {
-        const imageData = await toPng(resumeContent, { cacheBust: true });
-        const imgProps = pdf.getImageProperties(imageData);
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-        // Assuming you want to split the content into multiple pages
-        const pageHeight = pdf.internal.pageSize.getHeight();
-        let position = 0;
-
-        while (position < pdfHeight) {
-          pdf.addImage(imageData, "PNG", 0, -position, pdfWidth, pdfHeight);
-          position += pageHeight;
-          if (position < pdfHeight) {
-            pdf.addPage();
-          }
-        }
-      }
-
+      await generatePDF(sections, pdf, pdfWidth, pageHeight);
       pdf.save("resume.pdf");
     } catch (error) {
-      console.error("Error generating image with html-to-image:", error);
+      console.error("Error generating PDF:", error);
     } finally {
       setLoader(false);
     }
