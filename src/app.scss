@@ -95,9 +95,8 @@
       font-size: 1.8em;
       border-bottom: 2px solid #ddd;
 
-      padding-bottom: 5px;
-      margin-top: 5px;
-      margin-bottom: 0;
+      margin: 0;
+      padding: 0;
     }
 
     p {
@@ -108,7 +107,7 @@
   .skills {
     .skills-container {
       font-family: Arial, sans-serif;
-      padding: 20px;
+      padding: 10px 20px;
       font-size: 16px;
 
       .highlight {
@@ -130,13 +129,22 @@
       }
 
       .location-date {
+        margin-top: 6px;
+        margin-bottom: 10px;
+
         font-size: 0.9em;
         color: #666;
-        margin-bottom: 10px;
+      }
+
+      .headWrap {
+        display: flex;
+        justify-content: space-between;
       }
 
       ul {
         list-style: disc;
+
+        margin-top: 4px;
         margin-left: -5px;
         li {
           margin-bottom: 5px;
