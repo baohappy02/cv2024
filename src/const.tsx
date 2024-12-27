@@ -61,15 +61,15 @@ export const highlightedSkills = [
 ];
 
 export const name: string = "Le Quoc Bao";
-export const role: string = "Frontend Developer";
+export const role: string = "Frontend Engineer";
 export const email: string = "baole07701@gmail.com";
 export const linkIn: string =
   "https://www.linkedin.com/in/b%E1%BA%A3o-l%C3%AA-1131021a5/";
 
 export const jobData = [
   {
-    title: "Comprehensive Management Center",
-    date: "Thu Duc, HCM | April 2021 - Present",
+    title: "Comprehensive Management Centre",
+    date: "Thu Duc, HCM | September 2023 - Present",
     accomplishments: [
       "Developed two web applications: one for super admins to manage multiple centres, overseeing classes, permissions, and users with different roles (staff, instructors, parents, and students with varying levels), and another for parents to manage their students. Both applications include features for bookings, absences, and payments. Additionally, a landing page was created to promote payment plans, FAQs, tutorials, news, and more.",
       "Implemented custom reusable components and multilingual support, enhancing the user experience by accommodating various languages and ensuring a responsive user interface.",
@@ -82,7 +82,7 @@ export const jobData = [
     date: "Thu Duc, HCM | March 2022 - July 2023",
     accomplishments: [
       "Developed a robust platform for managing task-based bounties, featuring automated workflows and a role-based system integrated with cryptocurrency through MetaMask. This setup facilitates bidding and payments while ensuring secure and equitable distribution of rewards and penalties for issues such as early cancellation and late delivery among owners, developers, and validators.",
-      "Integrated user-centric features such as interactive onboarding tutorial,  real-time communication tools, including chat, video calls, and a friend-list feature, to enhance collaboration and engagement among users, utilizing Firebase and Amazon SDK.",
+      "Integrated user-centric features such as interactive onboarding tutorials,  real-time communication tools, including chat, video calls, and a friend-list feature, to enhance collaboration and engagement among users, utilizing Firebase and Amazon SDK.",
       " Delivered a dynamic and responsive user interface that improves accessibility and user satisfaction, fostering collaboration and efficiency through cutting-edge technologies like Vue.js and TailwindCSS.",
     ],
   },

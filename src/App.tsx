@@ -29,11 +29,12 @@ const Resume = () => {
 
     try {
       const pdf = new jsPDF();
-      const margin = 10; // Define margin size (adjust as needed)
+      const margin = 10;
       const pageHeight = pdf.internal.pageSize.getHeight();
       const pageWidth = pdf.internal.pageSize.getWidth();
       const availablePageHeight = pageHeight - 2 * margin;
       const availablePageWidth = pageWidth - 2 * margin;
+
       let cumulativeHeight = margin;
 
       // Get all sections
