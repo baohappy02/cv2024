@@ -71,25 +71,28 @@ export const jobData = [
     title: "Comprehensive Management Center",
     date: "Thu Duc, HCM | April 2021 - Present",
     accomplishments: [
-      "Developed two web applications for super admins: one to manage multiple centres, each overseeing classes, permissions, and users with different roles (staff, instructors, parents, and students with varying levels), and another for parents to manage their students, which also includes bookings, absences, and payments. Additionally, a landing page.",
-      "Implemented custom reusable components for a responsive user interface.",
-      "Integrated payment processing and discount features for class bookings.",
-      "Enabled multilingual support, allowing the addition of multiple languages beyond English and Vietnamese.",
+      "Developed two web applications: one for super admins to manage multiple centres, overseeing classes, permissions, and users with different roles (staff, instructors, parents, and students with varying levels), and another for parents to manage their students. Both applications include features for bookings, absences, and payments. Additionally, a landing page was created to promote payment plans, FAQs, tutorials, news, and more.",
+      "Implemented custom reusable components and multilingual support, enhancing the user experience by accommodating various languages and ensuring a responsive user interface.",
       "Created a dynamic dashboard displaying real-time data on class schedules and user activities.",
       "Developed advanced reporting features to track metrics such as attendance and revenue.",
     ],
   },
-
+  {
+    title: "BountyHub",
+    date: "Thu Duc, HCM | March 2022 - July 2023",
+    accomplishments: [
+      "Developed a robust platform for managing task-based bounties, featuring automated workflows and a role-based system integrated with cryptocurrency through MetaMask. This setup facilitates bidding and payments while ensuring secure and equitable distribution of rewards and penalties for issues such as early cancellation and late delivery among owners, developers, and validators.",
+      "Integrated user-centric features such as interactive onboarding tutorial,  real-time communication tools, including chat, video calls, and a friend-list feature, to enhance collaboration and engagement among users, utilizing Firebase and Amazon SDK.",
+      " Delivered a dynamic and responsive user interface that improves accessibility and user satisfaction, fostering collaboration and efficiency through cutting-edge technologies like Vue.js and TailwindCSS.",
+    ],
+  },
   {
     title: "NFT Auction Hub",
     date: "Thu Duc, HCM | October 2021 - January 2023",
     accomplishments: [
-      "Developed a platform enabling users to buy, bid, and sell NFTs using cryptocurrency, with seamless integration of MetaMask for payments.",
-      "Implemented wallet functionalities, including network switching, token addition, and account details retrieval, enhancing accessibility.",
+      "Developed a platform enabling users to buy, bid, and sell NFTs using cryptocurrency, with seamless integration of MetaMask, etherjs functionalities for payments, enhancing accessibility",
       "Built a fully custom UI tailored to the project's unique design requirements using Vue.js and TailwindCSS.",
-      "Designed an automated bidding system with countdown timers, supporting efficient and transparent NFT auctions.",
-      "Integrated user-centric features such as a gallery to view purchased NFTs and options to resell them for cryptocurrency.",
-      "Delivered an interactive onboarding tutorial, guiding users through platform features with step-by-step instructions.",
+      "Integrated user-centric features such as interactive onboarding tutorial, bidding, selling, view gallery of NFTs.",
       "Ensured a responsive and engaging interface, improving user experience and satisfaction.",
     ],
   },
