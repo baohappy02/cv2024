@@ -63,6 +63,7 @@ export const highlightedSkills = [
 export const name: string = "Le Quoc Bao";
 export const role: string = "Frontend Engineer";
 export const email: string = "baole07701@gmail.com";
+export const site: string = "https://lequocbao.surge.sh/";
 export const linkIn: string =
   "https://www.linkedin.com/in/b%E1%BA%A3o-l%C3%AA-1131021a5/";
 export const oldCV: string =
