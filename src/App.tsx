@@ -12,6 +12,7 @@ import {
   jobData,
   linkIn,
   name,
+  oldCV,
   role,
   skills,
 } from "./const";
@@ -143,6 +144,10 @@ const Resume = () => {
               <a href={linkIn} target="_blank" rel="noreferrer">
                 <LinkedinLogo />
                 <p>{cleanLinkedInUrl(linkIn)}</p>
+              </a>
+              <a href={oldCV} target="_blank" rel="noreferrer">
+                <LinkedinLogo />
+                <p>CV</p>
               </a>
             </div>
           </header>
