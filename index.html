@@ -2,18 +2,52 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#ff0000" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="application-name" content="My Web App" />
-    <meta name="apple-mobile-web-app-title" content="Mobile rules" />
+    <meta name="application-name" content="Le Quoc Bao Resume" />
     <meta name="apple-mobile-web-app-status-bar-style" content="red" />
-    <title>CV - Le Quoc Bao</title>
+    <meta
+      name="description"
+      content="Professional resume of Le Quoc Bao showcasing projects, skills, and experience." />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="Referrer-Policy" content="no-referrer" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <link rel="preload" href="/src/main.tsx" as="script" />
+
+    <title>Le Quoc Bao Resume</title>
+
+    <style>
+      :root {
+        font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+        line-height: 1.5;
+        font-weight: 400;
+
+        color-scheme: light dark;
+        color: rgba(255, 255, 255, 0.87);
+        background-color: #242424;
+
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      #root {
+        width: 100vw;
+        width: 100dvw;
+
+        height: 100vh;
+        height: 100dvh;
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">Loading...</div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
