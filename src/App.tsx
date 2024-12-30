@@ -5,6 +5,8 @@ import { toCanvas } from "html-to-image";
 import LinkedinLogo from "./assets/LinkedinLogo";
 import HomeLogo from "./assets/HomeLogo";
 import EmailLogo from "./assets/EmailLogo";
+import ResumeLogo from "./assets/ResumeLogo";
+
 import { useCallback, useRef, useState, memo } from "react";
 import {
   email,
@@ -160,7 +162,7 @@ const Resume = () => {
                 <p>{cleanLinkedInUrl(linkIn)}</p>
               </a>
               <a href={oldCV} target="_blank" rel="noreferrer">
-                <LinkedinLogo />
+                <ResumeLogo />
                 <p>CV</p>
               </a>
             </div>
