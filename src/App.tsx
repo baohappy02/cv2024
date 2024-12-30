@@ -10,6 +10,7 @@ import ResumeLogo from "./assets/ResumeLogo";
 import { useCallback, useRef, useState, memo } from "react";
 import {
   email,
+  git,
   highlightedSkills,
   jobData,
   linkIn,
@@ -20,6 +21,7 @@ import {
   skills,
 } from "./const";
 import { cleanLinkedInUrl } from "./utils";
+import GithubLogo from "./assets/GithubLogo";
 
 const Resume = () => {
   const resumeContentRef = useRef<HTMLDivElement | null>(null);
@@ -160,6 +162,10 @@ const Resume = () => {
               <a href={linkIn} target="_blank" rel="noreferrer">
                 <LinkedinLogo />
                 <p>{cleanLinkedInUrl(linkIn)}</p>
+              </a>
+              <a href={git} target="_blank" rel="noreferrer">
+                <GithubLogo />
+                <p>Github</p>
               </a>
               <a href={oldCV} target="_blank" rel="noreferrer">
                 <ResumeLogo />
