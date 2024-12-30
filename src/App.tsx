@@ -2,11 +2,13 @@ import "./app.scss";
 
 import jsPDF from "jspdf";
 import { toCanvas } from "html-to-image";
-import LinkedinLogo from "./assets/LinkedinLogo";
-import HomeLogo from "./assets/HomeLogo";
-import EmailLogo from "./assets/EmailLogo";
-import ResumeLogo from "./assets/ResumeLogo";
-
+import {
+  EmailLogo,
+  GithubLogo,
+  HomeLogo,
+  LinkedinLogo,
+  ResumeLogo,
+} from "./assets";
 import { useCallback, useRef, useState, memo } from "react";
 import {
   email,
@@ -21,7 +23,6 @@ import {
   skills,
 } from "./const";
 import { cleanLinkedInUrl } from "./utils";
-import GithubLogo from "./assets/GithubLogo";
 
 const Resume = () => {
   const resumeContentRef = useRef<HTMLDivElement | null>(null);
