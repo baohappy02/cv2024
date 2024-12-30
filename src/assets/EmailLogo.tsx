@@ -13,9 +13,9 @@ const EmailLogo = () => {
       <g
         id="Page-1"
         stroke="none"
-        stroke-width="1"
+        strokeWidth="1"
         fill="none"
-        fill-rule="evenodd">
+        fillRule="evenodd">
         <g
           id="Icon-Set-Filled"
           transform="translate(-414.000000, -261.000000)"

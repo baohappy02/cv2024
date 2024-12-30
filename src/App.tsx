@@ -1,14 +1,12 @@
 import "./app.scss";
 
-import jsPDF from "jspdf";
-import { toCanvas } from "html-to-image";
 import {
   EmailLogo,
   GithubLogo,
   HomeLogo,
   LinkedinLogo,
   ResumeLogo,
-} from "./assets";
+} from "src/assets";
 import { useCallback, useRef, useState, memo } from "react";
 import {
   email,
@@ -29,6 +27,9 @@ const Resume = () => {
   const [showLoader, setLoader] = useState<boolean>(false);
 
   const downloadPDF = useCallback(async () => {
+    const { jsPDF } = await import("jspdf");
+    const { toCanvas } = await import("html-to-image");
+
     const resumeContent = resumeContentRef.current;
     if (!resumeContent) return;
 
