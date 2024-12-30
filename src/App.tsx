@@ -57,9 +57,14 @@ const Resume = () => {
         for (let j = 0; j < elements.length; j++) {
           const element = elements[j] as HTMLElement;
 
-          // Convert element to canvas
-          const canvas = await toCanvas(element, { cacheBust: true });
-          const imgData = canvas.toDataURL("image/png");
+          // Convert element to canvas with reduced scale for smaller resolution
+          const canvas = await toCanvas(element, {
+            cacheBust: true,
+            quality: 0.8, // Reduce the scale for smaller file size
+            backgroundColor: "#fff",
+          });
+          
+          const imgData = canvas.toDataURL("image/jpeg", 0.75); // Use JPEG with 75% quality
           const imgProps = pdf.getImageProperties(imgData);
           const imgHeight =
             (imgProps.height * availablePageWidth) / imgProps.width;
@@ -77,7 +82,7 @@ const Resume = () => {
 
               pdf.addImage(
                 imgData,
-                "PNG",
+                "JPEG",
                 margin,
                 cumulativeHeight,
                 scaledWidth,
@@ -90,7 +95,7 @@ const Resume = () => {
 
               pdf.addImage(
                 imgData,
-                "PNG",
+                "JPEG",
                 margin,
                 cumulativeHeight,
                 availablePageWidth,
@@ -102,7 +107,7 @@ const Resume = () => {
             // Add image to PDF
             pdf.addImage(
               imgData,
-              "PNG",
+              "JPEG",
               margin,
               cumulativeHeight,
               availablePageWidth,
