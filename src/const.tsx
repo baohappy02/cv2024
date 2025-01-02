@@ -65,8 +65,7 @@ export const role: string = "Frontend Engineer";
 export const email: string = "baole07701@gmail.com";
 export const site: string = "https://lequocbao.surge.sh/";
 export const git: string = "https://github.com/baohappy02/cv2024";
-export const linkIn: string =
-  "https://www.linkedin.com/in/b%E1%BA%A3o-l%C3%AA-1131021a5/";
+export const linkIn: string = "https://www.linkedin.com/in/bao-le-kyle/";
 export const oldCV: string =
   "https://www.canva.com/design/DAGZD8C81W4/E_J6U-bKw6ZweMfSWkoXQg/view?utm_content=DAGZD8C81W4&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h646b535e56#1";
 

@@ -60,11 +60,11 @@ const Resume = () => {
           // Convert element to canvas with reduced scale for smaller resolution
           const canvas = await toCanvas(element, {
             cacheBust: true,
-            quality: 0.8, // Reduce the scale for smaller file size
+            quality: 1, // Reduce the scale for smaller file size
             backgroundColor: "#fff",
           });
-          
-          const imgData = canvas.toDataURL("image/jpeg", 0.75); // Use JPEG with 75% quality
+
+          const imgData = canvas.toDataURL("image/jpeg", 1); // Use JPEG with 75% quality
           const imgProps = pdf.getImageProperties(imgData);
           const imgHeight =
             (imgProps.height * availablePageWidth) / imgProps.width;
